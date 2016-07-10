@@ -1,10 +1,9 @@
 module Kitechart
   class DataFormatter
-    def initialize(data, first_column = nil, second_column = nil, third_column = nil, sum_column: 'id')
+    def initialize(data, first_column = nil, second_column = nil, third_column = nil)
       @first_column = first_column
       @second_column = second_column
       @third_column = third_column
-      @sum_column = sum_column
       @data = data
     end
 
@@ -18,10 +17,10 @@ module Kitechart
 
     private
 
-    attr_reader :data, :first_column, :second_column, :third_column, :sum_column
+    attr_reader :data, :first_column, :second_column, :third_column
 
     def top_level_data
-      data.where("#{first_column} IS NOT NULL").group(first_column).sum(sum_column)
+      data.where("#{first_column} IS NOT NULL").group(first_column).count
     end
 
     def second_level_data
@@ -30,7 +29,7 @@ module Kitechart
         table_second_level = data.where("#{first_column} = ? AND #{second_column} IS NOT NULL", top_level[0])
         second_level_data[top_level[0]] = table_second_level.
           group(second_column).
-          sum(sum_column)
+          count
       end
       second_level_data
     end
@@ -64,7 +63,7 @@ module Kitechart
 
     def third_level_data_count(top_level, second_level, third_level_data, table_third_level)
       third_level_data[top_level][second_level] =
-        table_third_level.group(third_column).sum(sum_column)
+        table_third_level.group(third_column).count
       third_level_data
     end
 

@@ -29,7 +29,7 @@ $(function () {
             borderWidth: 0,
             dataLabels: {
               enabled: true,
-              format: '${point.y:,.0f}'
+              format: '{point.y:,.0f}'
             }
           }
         },
@@ -37,7 +37,7 @@ $(function () {
           enabled: false
         },
         tooltip: {
-          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>${point.y:,.2f}</b><br/>'
+          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
         },
         series: [{
           colorByPoint: true,

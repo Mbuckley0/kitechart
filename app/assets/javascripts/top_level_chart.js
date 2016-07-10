@@ -38,13 +38,6 @@ $(function () {
         },
         series: [{
           colorByPoint: true,
-          point: {
-            events: {
-              click: function () {
-                location.href = this.options.url;
-              }
-            }
-          },
           data: chartData
         }]
       });
@@ -55,8 +48,7 @@ $(function () {
       $.each(data, function(key, value){
         chartData.push({
           name: key,
-          y: value,
-          url: 'suppliers/' + encodeURIComponent(key)
+          y: value
         });
       });
       return chartData;
