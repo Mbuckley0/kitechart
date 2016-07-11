@@ -1,6 +1,8 @@
 # Kitechart
 A data formatter and highcharts drilldown wrapper gem
 
+Sponsored by [tworedkites](http://tworedkites.com/).
+
 ## Installation
 
 Add this line to your application's Gemfile:
