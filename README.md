@@ -77,6 +77,10 @@ class KitesController < ApplicationController
 end
 ```
 
+## Demo
+The demo app webpage for the kitechart gem is viewable [here](https://protected-shore-59130.herokuapp.com/)
+The demo app codebase can also be viewed [here](https://github.com/Mbuckley0/kitechart)
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/mbuckley0/kitechart.
