@@ -1,12 +1,13 @@
 $(function () {
   window.Chart = {
-    generateChart: function(title, yAxisTitle, chartType, topLevelData, secondLevelData, thirdLevelData, options) {
-      if (thirdLevelData != undefined) {
-        Chart.generateThirdLevelChart(topLevelData, secondLevelData, thirdLevelData, title, yAxisTitle, chartType, options);
-      } else if (secondLevelData != undefined) {
-        Chart.generateSecondLevelChart(topLevelData, secondLevelData, title, yAxisTitle, chartType, options);
-      } else if(topLevelData != undefined) {
-        Chart.generateTopLevelChart(topLevelData, title, yAxisTitle, chartType, options);
+    generateChart: function(title, yAxisTitle, chartType, options) {
+      var options = options || {};
+      if (options['thirdLevelData'] != undefined) {
+        Chart.generateThirdLevelChart(options['topLevelData'], options['secondLevelData'], options['thirdLevelData'], title, yAxisTitle, chartType, options);
+      } else if (options['secondLevelData'] != undefined) {
+        Chart.generateSecondLevelChart(options['topLevelData'], options['secondLevelData'], title, yAxisTitle, chartType, options);
+      } else if(options['topLevelData'] != undefined) {
+        Chart.generateTopLevelChart(options['topLevelData'], title, yAxisTitle, chartType, options);
       }
     },
 

@@ -42,6 +42,11 @@ $(function () {
           pointFormat: options['tooltip-pointFormat'] || '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
         },
         series: [{
+          point: {
+            events: {
+              click: options['series-point-events-click'] || ''
+            }
+          },
           colorByPoint: options['series-colorByPoint'] || true,
           data: chartData
         }],
