@@ -1,7 +1,8 @@
 $(function () {
   // Data is expected to be in the form of {label: value, label: value, label: value}
   window.TopLevelChart = {
-    displayChart: function (data, title, yAxisTitle, chartType) {
+    displayChart: function (data, title, yAxisTitle, chartType, options) {
+      var options = options || {};
       var chartData = TopLevelChart.formatData(data);
 
       $('#container').highcharts({
@@ -11,8 +12,11 @@ $(function () {
         title: {
           text: title
         },
+        subtitle: {
+          text: options['subtitle-text'] || ''
+        },
         xAxis: {
-          type: 'category'
+          type: options['xAxis-type'] || 'category'
         },
         yAxis: {
           min: 0,
@@ -22,22 +26,22 @@ $(function () {
         },
         plotOptions: {
           series: {
-            borderWidth: 0,
+            borderWidth: options['plotOptions-series-borderWidth'] || 0,
             dataLabels: {
-              enabled: true,
-              format: '{point.y:,.0f}'
+              enabled: options['plotOptions-series-dataLabel-enabled'] || true,
+              format: options['plotOptions-series-dataLabel-format'] || '{point.y:,.0f}'
             }
           }
         },
         legend: {
-          enabled: false
+          enabled: options['legend-enabled'] || false
         },
         tooltip: {
-          headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
+          headerFormat: options['tooltip-headerFormat'] || '',
+          pointFormat: options['tooltip-pointFormat'] || '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
         },
         series: [{
-          colorByPoint: true,
+          colorByPoint: options['series-colorByPoint'] || true,
           data: chartData
         }]
       });

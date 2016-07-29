@@ -1,7 +1,8 @@
 $(function () {
   // Data is expected to be in the form of {label: {label: value, drilldown: {label: value}}, label: {label: value, drilldown:{label: value}}}
   window.TwoLevelDownChart = {
-    displayChart: function (data, title, yAxisTitle, chartType) {
+    displayChart: function (data, title, yAxisTitle, chartType, options) {
+      var options = options || {};
       var chartData = TwoLevelDownChart.formatTopLevelData(data);
       var drilldownData = TwoLevelDownChart.formatDrilldownData(data);
 
@@ -13,10 +14,10 @@ $(function () {
           text: title
         },
         subtitle: {
-          text: 'Click the columns to drill down.'
+          text: options['subtitle-text'] || 'Click the columns to drill down.'
         },
         xAxis: {
-          type: 'category'
+          type: options['xAxis-type'] || 'category'
         },
         yAxis: {
           title: {
@@ -26,21 +27,22 @@ $(function () {
         },
         plotOptions: {
           series: {
-            borderWidth: 0,
+            borderWidth: options['plotOptions-series-borderWidth'] || 0,
             dataLabels: {
-              enabled: true,
-              format: '{point.y:,.0f}'
+              enabled: options['plotOptions-series-dataLabel-enabled'] || true,
+              format: options['plotOptions-series-dataLabel-format'] || '{point.y:,.0f}'
             }
           }
         },
         legend: {
-          enabled: false
+          enabled: options['legend-enabled'] || false
         },
         tooltip: {
-          pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
+          headerFormat: options['tooltip-headerFormat'] || '',
+          pointFormat: options['tooltip-pointFormat'] || '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
         },
         series: [{
-          colorByPoint: true,
+          colorByPoint: options['series-colorByPoint'] || true,
           data: chartData
         }],
         drilldown: {

@@ -1,24 +1,24 @@
 $(function () {
   window.Chart = {
-    generateChart: function(title, yAxisTitle, chartType, topLevelData, secondLevelData, thirdLevelData) {
+    generateChart: function(title, yAxisTitle, chartType, topLevelData, secondLevelData, thirdLevelData, options) {
       if (thirdLevelData != undefined) {
-        Chart.generateThirdLevelChart(topLevelData, secondLevelData, thirdLevelData, title, yAxisTitle, chartType);
+        Chart.generateThirdLevelChart(topLevelData, secondLevelData, thirdLevelData, title, yAxisTitle, chartType, options);
       } else if (secondLevelData != undefined) {
-        Chart.generateSecondLevelChart(topLevelData, secondLevelData, title, yAxisTitle, chartType);
+        Chart.generateSecondLevelChart(topLevelData, secondLevelData, title, yAxisTitle, chartType, options);
       } else if(topLevelData != undefined) {
-        Chart.generateTopLevelChart(topLevelData, title, yAxisTitle, chartType);
+        Chart.generateTopLevelChart(topLevelData, title, yAxisTitle, chartType, options);
       }
     },
 
-    generateTopLevelChart: function(topLevelData, title, yAxisTitle, chartType) {
+    generateTopLevelChart: function(topLevelData, title, yAxisTitle, chartType, options) {
       formattedData = topLevelData;
       $.each(topLevelData, function(key, value) {
         formattedData[key] = Math.round(value);
       });
-      TopLevelChart.displayChart(formattedData, title, yAxisTitle, chartType);
+      TopLevelChart.displayChart(formattedData, title, yAxisTitle, chartType, options);
     },
 
-    generateSecondLevelChart: function(topLevelData, secondLevelData, title, yAxisTitle, chartType) {
+    generateSecondLevelChart: function(topLevelData, secondLevelData, title, yAxisTitle, chartType, options) {
       formattedData = topLevelData;
       $.each(topLevelData, function(key, value) {
         formattedData[key] = {label: Math.round(value)};
@@ -27,10 +27,10 @@ $(function () {
             formattedData[key]['drilldown'][drilldownKey] = Math.round(drilldownValue)
           });
       });
-      OneLevelDownChart.displayChart(formattedData, title, yAxisTitle, chartType);
+      OneLevelDownChart.displayChart(formattedData, title, yAxisTitle, chartType, options);
     },
 
-    generateThirdLevelChart: function(topLevelData, secondLevelData, thirdLevelData, title, yAxisTitle, chartType) {
+    generateThirdLevelChart: function(topLevelData, secondLevelData, thirdLevelData, title, yAxisTitle, chartType, options) {
       formattedData = topLevelData;
       $.each(topLevelData, function(key, value) {
         i = 0;
@@ -52,7 +52,7 @@ $(function () {
           i++
         });
       });
-      TwoLevelDownChart.displayChart(formattedData, title, yAxisTitle, chartType);
+      TwoLevelDownChart.displayChart(formattedData, title, yAxisTitle, chartType, options);
     }
   }
 });
