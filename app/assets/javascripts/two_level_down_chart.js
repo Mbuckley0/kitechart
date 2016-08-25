@@ -8,7 +8,8 @@ $(function () {
 
       $('#container').highcharts({
         chart: {
-          type: chartType
+          type: chartType,
+          backgroundColor: options['chart-backgroundColor'] || 'white'
         },
         title: {
           text: title
