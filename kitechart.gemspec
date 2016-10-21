@@ -4,22 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'kitechart/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "kitechart"
+  spec.name          = 'kitechart'
   spec.version       = Kitechart::VERSION
   spec.authors       = ['Mitchell Buckley']
   spec.email         = ['mitchell.buckley@live.com']
 
   spec.summary       = %q{A charting gem}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
+  spec.homepage      = 'https://github.com/Mbuckley0/kitechart'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"

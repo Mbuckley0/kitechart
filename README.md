@@ -8,7 +8,7 @@ Sponsored by [tworedkites](http://tworedkites.com/).
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'kitechart', git: 'https://github.com/Mbuckley0/kitechart.git', branch: :master
+gem 'kitechart', '~> 0.1.0'
 ```
 
 And then execute:
