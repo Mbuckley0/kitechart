@@ -1,10 +1,33 @@
-$(function () {
-  // Data is expected to be in the form of {label: {label: value, drilldown: {label: value}}, label: {label: value, drilldown:{label: value}}}
+$(function() {
   window.TwoLevelDownChart = {
-    displayChart: function (data, title, yAxisTitle, chartType, options) {
+    mergeNames: function(arr) {
+      return _.chain(arr).groupBy('name').mapValues(function(v) {
+        return { name: v[0].name, y: _.sumBy(v, 'y'), drilldown: v[0].name };
+      }).value();
+    },
+
+    mergeDrilldowns: function(arr) {
+      return _.chain(arr).groupBy('name').mapValues(function(v) {
+        var data = [];
+        $.each(v, function(key, value) {
+          data.push({ name: value.data[0].name, y: value.data[0].y, drilldown: value.data[0].drilldown });
+        });
+        return { id: v[0].id, data: data, name: v[0].name };
+      }).value();
+    },
+
+
+    displayChart: function(data, title, yAxisTitle, chartType, options) {
       var options = options || {};
       var chartData = TwoLevelDownChart.formatTopLevelData(data);
-      var drilldownData = TwoLevelDownChart.formatDrilldownData(data);
+      var drilldownData = TwoLevelDownChart.formatFirstDrilldownData(data);
+      var SecondDrilldownData = TwoLevelDownChart.formatSecondDrilldownData(data);
+
+      var newData = _.values(TwoLevelDownChart.mergeNames(chartData));
+      var newdrilldownData = _.values(TwoLevelDownChart.mergeDrilldowns(drilldownData));
+      var newSecondDrilldownData = _.values(TwoLevelDownChart.mergeDrilldowns(SecondDrilldownData));
+
+      var allDrilldownData = newdrilldownData.concat(newSecondDrilldownData);
 
       $('#container').highcharts({
         chart: {
@@ -49,71 +72,63 @@ $(function () {
             }
           },
           colorByPoint: options['series-colorByPoint'] || true,
-          data: chartData
+          data: newData
         }],
         drilldown: {
-          series: drilldownData
+          series: allDrilldownData
         }
       });
     },
 
-    formatTopLevelData: function (data) {
+    formatTopLevelData: function(data) {
       var chartData = [];
 
-      $.each(data, function(key, value) {
+      $.each(data['data'], function(_key, value) {
         chartData.push({
-          name: key,
-          y: value['label'],
-          drilldown: key
+          name: Object.values(value)[0].toString(),
+          y: parseFloat(Object.values(value)[3]),
+          drilldown: Object.values(value)[0].toString()
         });
       });
       return chartData;
     },
 
-    formatDrilldownData: function (data) {
+    formatFirstDrilldownData: function(data) {
       var drilldownData = [];
 
-      $.each(data, function(key, value) {
-        firstObjectData = [];
-        i = 0;
-        $.each(value['drilldown']['label'], function(firstDrilldownKey, firstDrilldownValue) {
-          secondObjectData = [];
-          firstObjectData.push({
-            name: firstDrilldownKey,
-            y: firstDrilldownValue,
-            drilldown: key + '_' + firstDrilldownKey
-          });
-
-
-          $.each(value['drilldown']['drilldown'][i], function(secondDrilldownIDKey, secondDrilldownIDValue) {
-            if(secondDrilldownIDValue != undefined) {
-              $.each(secondDrilldownIDValue, function(secondDrilldownKey, secondDrilldownValue) {
-                secondObjectData.push([
-                  secondDrilldownKey,
-                  data[key]['drilldown']['drilldown'][i][secondDrilldownIDKey][secondDrilldownKey]
-                ]);
-              });
+      $.each(data['data'], function(key, value) {
+        drilldownData.push({
+          name: Object.values(value)[0].toString(),
+          id: Object.values(value)[0].toString(),
+          data: [
+            {
+              name: Object.values(value)[1].toString(),
+              y: parseFloat(Object.values(value)[3]),
+              drilldown: Object.values(value)[0].toString() + Object.values(value)[1].toString(),
             }
-          });
-
-          if (secondObjectData.length >= 1) {
-            drilldownData.push({
-              name: firstDrilldownKey,
-              id: key + '_' + firstDrilldownKey,
-              data: secondObjectData
-            });
-          }
-          i++;
+          ]
         });
-
-        if (firstObjectData.length >= 1) {
-          drilldownData.push({
-            name: key,
-            id: key,
-            data: firstObjectData
-          });
-        }
       });
+
+      return drilldownData;
+    },
+
+    formatSecondDrilldownData: function(data) {
+      var drilldownData = [];
+
+      $.each(data['data'], function(key, value) {
+        drilldownData.push({
+          name: Object.values(value)[0].toString() + Object.values(value)[1].toString(),
+          id: Object.values(value)[0].toString() + Object.values(value)[1].toString(),
+          data: [
+            {
+              name: Object.values(value)[2].toString(),
+              y: parseFloat(Object.values(value)[3])
+            }
+          ]
+        });
+      });
+
       return drilldownData;
     }
   }

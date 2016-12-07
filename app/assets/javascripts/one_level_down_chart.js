@@ -1,10 +1,30 @@
-$(function () {
+$(function() {
   // Data is expected to be in the form of {label: {label: value, drilldown: {label: value}}, label: {label: value, drilldown:{label: value}}}
   window.OneLevelDownChart = {
-    displayChart: function (data, title, yAxisTitle, chartType, options) {
+    mergeNames: function(arr) {
+      return _.chain(arr).groupBy('name').mapValues(function(v) {
+        return { name: v[0].name, y: _.sumBy(v, 'y'), drilldown: v[0].name };
+      }).value();
+    },
+
+    mergeDrilldowns: function(arr) {
+      return _.chain(arr).groupBy('name').mapValues(function(v) {
+        var data = [];
+        $.each(v, function(key, value) {
+          data.push(_.flatten(value.data));
+        });
+        return { id: v[0].id, data: data, name: v[0].name };
+      }).value();
+    },
+
+
+    displayChart: function(data, title, yAxisTitle, chartType, options) {
       var options = options || {};
       var chartData = OneLevelDownChart.formatTopLevelData(data);
-      var drilldownData = OneLevelDownChart.formatFirstDrilldownData(data);
+      var drilldownData = OneLevelDownChart.formatDrilldownData(data);
+
+      var newData = _.values(OneLevelDownChart.mergeNames(chartData));
+      var newdrilldownData = _.values(OneLevelDownChart.mergeDrilldowns(drilldownData));
 
       $('#container').highcharts({
         chart: {
@@ -49,10 +69,10 @@ $(function () {
             }
           },
           colorByPoint: options['series-colorByPoint'] || true,
-          data: chartData
+          data: newData
         }],
         drilldown: {
-          series: drilldownData
+          series: newdrilldownData
         }
       });
     },
@@ -60,35 +80,32 @@ $(function () {
     formatTopLevelData: function(data) {
       var chartData = [];
 
-      $.each(data, function(key,value){
+      $.each(data['data'], function(_key, value) {
         chartData.push({
-          name: key,
-          y: value['label'],
-          drilldown: key
+          name: Object.values(value)[0],
+          y: Object.values(value)[3],
+          drilldown: Object.values(value)[0]
         });
       });
-
       return chartData;
     },
 
-    formatFirstDrilldownData: function(data) {
+    formatDrilldownData: function(data) {
       var drilldownData = [];
 
-      $.each(data, function(key, value) {
-        objectData = [];
-        for(var drilldownKey in value['drilldown']) {
-          objectData.push([
-            drilldownKey,
-            value['drilldown'][drilldownKey]
-          ]);
-        }
-
+      $.each(data['data'], function(key, value) {
         drilldownData.push({
-          name: key,
-          id: key,
-          data: objectData
+          name: Object.values(value)[0].toString(),
+          id: Object.values(value)[0].toString(),
+          data: [
+            [
+              Object.values(value)[1].toString(),
+              parseFloat(Object.values(value)[3])
+            ]
+          ]
         });
       });
+
       return drilldownData;
     }
   }

@@ -1,9 +1,16 @@
-$(function () {
-  // Data is expected to be in the form of {label: value, label: value, label: value}
+$(function() {
   window.TopLevelChart = {
-    displayChart: function (data, title, yAxisTitle, chartType, options) {
+    mergeNames: function(arr) {
+      return _.chain(arr).groupBy('name').mapValues(function(v) {
+        return { name: v[0].name, y: _.sumBy(v, 'y') };
+      }).value();
+    },
+
+
+    displayChart: function(data, title, yAxisTitle, chartType, options) {
       var options = options || {};
       var chartData = TopLevelChart.formatData(data);
+      var newData = _.values(TopLevelChart.mergeNames(chartData));
 
       $('#container').highcharts({
         chart: {
@@ -14,16 +21,16 @@ $(function () {
           text: title
         },
         subtitle: {
-          text: options['subtitle-text'] || ''
+          text: options['subtitle-text'] || 'Click the columns to drill down.'
         },
         xAxis: {
           type: options['xAxis-type'] || 'category'
         },
         yAxis: {
-          min: 0,
           title: {
             text: yAxisTitle
           }
+
         },
         plotOptions: {
           series: {
@@ -48,20 +55,21 @@ $(function () {
             }
           },
           colorByPoint: options['series-colorByPoint'] || true,
-          data: chartData
-        }]
+          data: newData
+        }],
       });
     },
 
-    formatData: function (data) {
+    formatData: function(data) {
       var chartData = [];
-      $.each(data, function(key, value){
+
+      $.each(data['data'], function(_key, value) {
         chartData.push({
-          name: key,
-          y: value
+          name: Object.values(value)[0].toString(),
+          y: parseFloat(Object.values(value)[1])
         });
       });
       return chartData;
-    }
+    },
   }
 });
