@@ -20,7 +20,7 @@ module Kitechart
     def top_level_data
       data_group = aggregate(data.where("#{first_column} IS NOT NULL").group(first_column))
       data_count = data_group.map do |value|
-        {color: value.first, count: value.second}
+        {first: value.first, count: value.second}
       end
       data_count
     end
@@ -28,7 +28,7 @@ module Kitechart
     def second_level_data
       data_group = aggregate(data.where("#{first_column} IS NOT NULL AND #{second_column} IS NOT NULL").group(first_column, second_column))
       data_count = data_group.map do |value|
-        {color: value.first.first, size: value.first.second, count: value.second}
+        {first: value.first.first, second: value.first.second, count: value.second}
       end
       data_count
     end
@@ -37,7 +37,7 @@ module Kitechart
       data_group = data.where("#{first_column} IS NOT NULL AND #{second_column} IS NOT NULL AND #{third_column} IS NOT NULL").group(first_column, second_column, third_column).count
 
       data_count = data_group.map do |value|
-        {color: value.first.first, size: value.first.second, material: value.first.third, count: value.second}
+        {first: value.first.first, second: value.first.second, third: value.first.third, count: value.second}
       end
       data_count
     end
