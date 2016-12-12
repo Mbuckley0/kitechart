@@ -96,7 +96,9 @@ $(function() {
       for (var i = 1; i < dataLength - 1; i++) {
         $.each(data['data'], function(_key, value) {
           var name = _.dropRight(Object.values(value), dataLength - i);
-          var drilldown = _.dropRight(Object.values(value), dataLength - i - 1);
+          if (i !== dataLength - 2) {
+            var drilldown = _.dropRight(Object.values(value), dataLength - i - 1);
+          }
 
           drilldownData.push({
             name: _.join(name, '-'),
