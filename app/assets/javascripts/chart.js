@@ -10,7 +10,12 @@ $(function() {
       return _.chain(arr).groupBy('name').mapValues(function(v) {
         var data = [];
         $.each(v, function(key, value) {
-          data.push({ name: value.data[0].name, y: value.data[0].y, drilldown: value.data[0].drilldown });
+          var item = _.find(data, { name: value.data[0].name });
+          if (item !== undefined) {
+            item.y = item.y + value.data[0].y;
+          } else {
+            data.push({ name: value.data[0].name, y: value.data[0].y, drilldown: value.data[0].drilldown });
+          }
         });
         return { id: v[0].id, data: data, name: v[0].name };
       }).value();
