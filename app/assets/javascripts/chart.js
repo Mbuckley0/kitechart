@@ -24,13 +24,15 @@ $(function() {
 
     generateChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
+      var container = options['container'] || '#container';
+
       var chartData = Chart.formatTopLevelData(data);
       var drilldownData = Chart.formatDrilldownData(data);
 
       var newData = _.values(Chart.mergeNames(chartData));
       var allDrilldownData = _.values(Chart.mergeDrilldowns(drilldownData));
 
-      $('#container').highcharts({
+      $(container).highcharts({
         chart: {
           type: chartType,
           backgroundColor: options['chart-backgroundColor'] || 'white'
