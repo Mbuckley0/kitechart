@@ -21,8 +21,16 @@ $(function() {
       }).value();
     },
 
-
     generateChart: function(title, data, yAxisTitle, chartType, options) {
+      if (chartType == 'timeline') {
+        TimelineChart.createChart(title, data, yAxisTitle, chartType, options)
+      } else {
+        Chart.createChart(title, data, yAxisTitle, chartType, options)
+      }
+    },
+
+
+    createChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
       var container = options['container'] || '#container';
 
