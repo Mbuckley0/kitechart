@@ -19,7 +19,7 @@ $(function() {
           enabled: options['scrollbar-enabled'] || true
         },
         xAxis: {
-          categories: options['categories'] || ['16/03/2017']
+          categories: options['categories'] || ['Category']
         },
         yAxis: {
           type: 'datetime',

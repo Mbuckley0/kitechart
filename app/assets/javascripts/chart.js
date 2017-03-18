@@ -28,6 +28,8 @@ $(function() {
         LineChart.createChart(title, data, yAxisTitle, chartType, options)
       } else if (chartType == 'donut') {
         DonutChart.createChart(title, data, yAxisTitle, chartType, options)
+      } else if (chartType == 'area') {
+        AreaChart.createChart(title, data, yAxisTitle, chartType, options)
       } else {
         Chart.createChart(title, data, yAxisTitle, chartType, options)
       }
@@ -132,6 +134,6 @@ $(function() {
         });
       }
       return drilldownData;
-    },
+    }
   }
 });
