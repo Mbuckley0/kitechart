@@ -1,11 +1,12 @@
 $(function() {
-  window.LineChart = {
+  window.AreaChart = {
     createChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
       var container = options['container'] || '#container';
 
       $(container).highcharts({
         chart: {
+          type: 'area',
           backgroundColor: options['chart-backgroundColor'] || 'white'
         },
         title: {
