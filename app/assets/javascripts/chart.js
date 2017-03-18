@@ -26,6 +26,8 @@ $(function() {
         TimelineChart.createChart(title, data, yAxisTitle, chartType, options)
       } else if (chartType == 'line') {
         LineChart.createChart(title, data, yAxisTitle, chartType, options)
+      } else if (chartType == 'donut') {
+        DonutChart.createChart(title, data, yAxisTitle, chartType, options)
       } else {
         Chart.createChart(title, data, yAxisTitle, chartType, options)
       }
@@ -60,7 +62,6 @@ $(function() {
           title: {
             text: yAxisTitle
           }
-
         },
         plotOptions: {
           series: {
