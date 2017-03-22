@@ -29,7 +29,8 @@ $(function() {
         },
         plotOptions: {
           columnrange: {
-            grouping: false
+            pointWidth: options['plotOptions-pointWidth'] || 60,
+            grouping: options['plotOptions-grouping'] || false
           }
         },
         legend: {
