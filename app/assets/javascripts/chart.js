@@ -68,6 +68,7 @@ $(function() {
         plotOptions: {
           series: {
             lineWidth: options['plotOptions-series-lineWidth'] || 2,
+            pointWidth: options['plotOptions-series-pointWidth'] || 15,
             borderWidth: options['plotOptions-series-borderWidth'] || 0,
             dataLabels: {
               enabled: options['plotOptions-series-dataLabel-enabled'] || true,
