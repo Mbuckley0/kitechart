@@ -25,6 +25,9 @@ $(function() {
             text: yAxisTitle
           }
         },
+        exporting: {
+          enabled: options['exporting-enabled'] || false
+        },
         plotOptions: {
           pie: {
             borderColor: '#000000',
@@ -33,6 +36,9 @@ $(function() {
           series: {
             borderWidth: options['plotOptions-series-borderWidth'] || 0,
             dataLabels: {
+              style: {
+                textOutline: options['plotOptions-dataLabels-style-textOutline'] || false
+              },
               enabled: options['plotOptions-series-dataLabel-enabled'] || true,
               format: options['plotOptions-series-dataLabel-format'] || '{point.y:,.0f}'
             }

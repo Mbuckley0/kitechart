@@ -18,6 +18,9 @@ $(function() {
         scrollbar: {
           enabled: options['scrollbar-enabled'] || true
         },
+        exporting: {
+          enabled: options['exporting-enabled'] || false
+        },
         xAxis: {
           categories: options['categories'] || ['Category']
         },

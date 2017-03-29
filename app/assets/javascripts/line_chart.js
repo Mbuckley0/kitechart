@@ -22,6 +22,9 @@ $(function() {
             color: '#808080'
           }]
         },
+        exporting: {
+          enabled: options['exporting-enabled'] || false
+        },
         legend: {
           layout: 'vertical',
           align: 'right',

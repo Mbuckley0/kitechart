@@ -13,6 +13,9 @@ $(function() {
           text: title,
           x: -20
         },
+        exporting: {
+          enabled: options['exporting-enabled'] || false
+        },
         xAxis: {
           categories: options['categories'] || ['Values']
         },
