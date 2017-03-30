@@ -13,7 +13,10 @@ $(function() {
           inverted: options['chart-inverted'] || true
         },
         title: {
-          text: title
+          text: title,
+          style: {
+            color: options['title-style-color'] || '#333333'
+          }
         },
         scrollbar: {
           enabled: options['scrollbar-enabled'] || true

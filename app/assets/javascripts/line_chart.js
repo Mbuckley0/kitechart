@@ -10,7 +10,10 @@ $(function() {
         },
         title: {
           text: title,
-          x: -20
+          x: -20,
+          style: {
+            color: options['title-style-color'] || '#333333'
+          }
         },
         xAxis: {
           categories: options['categories'] || ['Values']

@@ -52,7 +52,10 @@ $(function() {
           backgroundColor: options['chart-backgroundColor'] || 'white'
         },
         title: {
-          text: title
+          text: title,
+          style: {
+            color: options['title-style-color'] || '#333333'
+          }
         },
         subtitle: {
           text: options['subtitle-text'] || 'Click the columns to drill down.'
