@@ -63,7 +63,8 @@ $(function() {
         yAxis: {
           title: {
             text: yAxisTitle
-          }
+          },
+          gridLineColor: options['yAxis-gridLineColor'] || '#e6e6e6'
         },
         exporting: {
           enabled: options['exporting-enabled'] || false
