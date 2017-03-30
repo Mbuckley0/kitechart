@@ -34,10 +34,7 @@ $(function() {
           verticalAlign: 'middle',
           borderWidth: 0
         },
-        series: [{
-          name: options['series-name'] || 'Data',
-          data: data['data']
-        }]
+        series: data['data']
       });
     }
   }
