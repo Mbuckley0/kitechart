@@ -20,9 +20,15 @@ $(function() {
           enabled: options['exporting-enabled'] || false
         },
         xAxis: {
-          categories: options['categories'] || ['Values']
+          categories: options['categories'] || ['Values'],
+          labels: {
+            enabled: options['xAxis-labels-enabled'] || true
+          }
         },
         yAxis: {
+          labels: {
+            enabled: options['yAxis-labels-enabled'] || true
+          },
           plotLines: [{
             value: 0,
             width: 1,

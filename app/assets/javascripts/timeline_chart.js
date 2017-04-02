@@ -25,12 +25,18 @@ $(function() {
           enabled: options['exporting-enabled'] || false
         },
         xAxis: {
-          categories: options['categories'] || ['Category']
+          categories: options['categories'] || ['Category'],
+          labels: {
+            enabled: options['xAxis-labels-enabled'] || true
+          }
         },
         yAxis: {
           type: 'datetime',
           title: {
             text: yAxisTitle
+          },
+          labels: {
+            enabled: options['yAxis-labels-enabled'] || true
           }
         },
         plotOptions: {

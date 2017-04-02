@@ -61,11 +61,17 @@ $(function() {
           text: options['subtitle-text'] || 'Click the columns to drill down.'
         },
         xAxis: {
-          type: options['xAxis-type'] || 'category'
+          type: options['xAxis-type'] || 'category',
+          labels: {
+            enabled: options['xAxis-labels-enabled'] || true
+          }
         },
         yAxis: {
           title: {
             text: yAxisTitle
+          },
+          labels: {
+            enabled: options['yAxis-labels-enabled'] || true
           },
           gridLineColor: options['yAxis-gridLineColor'] || '#e6e6e6'
         },

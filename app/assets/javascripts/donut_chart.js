@@ -21,11 +21,17 @@ $(function() {
           text: options['subtitle-text'] || ''
         },
         xAxis: {
-          type: options['xAxis-type'] || 'category'
+          type: options['xAxis-type'] || 'category',
+          labels: {
+            enabled: options['xAxis-labels-enabled'] || true
+          }
         },
         yAxis: {
           title: {
             text: yAxisTitle
+          },
+          labels: {
+            enabled: options['yAxis-labels-enabled'] || true
           }
         },
         exporting: {
