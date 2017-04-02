@@ -2,7 +2,7 @@ $(function() {
   window.Chart = {
     mergeNames: function(arr) {
       return _.chain(arr).groupBy('name').mapValues(function(v) {
-        return { name: v[0].name, y: _.sumBy(v, 'y'), drilldown: v[0].name };
+        return { name: v[0].name, y: _.sumBy(v, 'y'), color: v[0].color, drilldown: v[0].name };
       }).value();
     },
 
@@ -14,7 +14,7 @@ $(function() {
           if (item !== undefined) {
             item.y = item.y + value.data[0].y;
           } else {
-            data.push({ name: value.data[0].name, y: value.data[0].y, drilldown: value.data[0].drilldown });
+            data.push({ name: value.data[0].name, y: value.data[0].y, color: v[0].color, drilldown: value.data[0].drilldown });
           }
         });
         return { id: v[0].id, data: data, name: v[0].name };
@@ -43,8 +43,13 @@ $(function() {
       var chartData = Chart.formatTopLevelData(data);
       var drilldownData = Chart.formatDrilldownData(data);
 
-      var newData = _.values(Chart.mergeNames(chartData));
-      var allDrilldownData = _.values(Chart.mergeDrilldowns(drilldownData));
+      if (options['mergeNames'] === false){
+        var newData = chartData;
+        var allDrilldownData = drilldownData;
+      } else {
+        var newData = _.values(Chart.mergeNames(chartData));
+        var allDrilldownData = _.values(Chart.mergeDrilldowns(drilldownData));
+      }
 
       $(container).highcharts({
         chart: {
@@ -121,7 +126,8 @@ $(function() {
         chartData.push({
           name: Object.values(value)[0].toString(),
           y: parseFloat(_.last(Object.values(value))),
-          drilldown: Object.values(value)[0].toString()
+          drilldown: Object.values(value)[0].toString(),
+          color: value['color']
         });
       });
       return chartData;
