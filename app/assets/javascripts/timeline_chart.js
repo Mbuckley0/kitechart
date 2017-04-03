@@ -1,33 +1,35 @@
 $(function() {
+  var getWithDefault = Kitechart.getWithDefault;
+  
   window.TimelineChart = {
     createChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
-      var container = options['container'] || '#container';
+      var container = getWithDefault(options['container'], '#container');
 
       var topLevelData = TimelineChart.formatTopLevelData(data);
 
       $(container).highcharts({
         chart: {
           type: 'columnrange',
-          backgroundColor: options['chart-backgroundColor'] || 'white',
-          inverted: options['chart-inverted'] || true
+          backgroundColor: getWithDefault(options['chart-backgroundColor'], 'white'),
+          inverted: getWithDefault(options['chart-inverted'], true)
         },
         title: {
           text: title,
           style: {
-            color: options['title-style-color'] || '#333333'
+            color: getWithDefault(options['title-style-color'], '#333333')
           }
         },
         scrollbar: {
-          enabled: options['scrollbar-enabled'] || true
+          enabled: getWithDefault(options['scrollbar-enabled'], true)
         },
         exporting: {
-          enabled: options['exporting-enabled'] || false
+          enabled: getWithDefault(options['exporting-enabled'], false)
         },
         xAxis: {
-          categories: options['categories'] || ['Category'],
+          categories: getWithDefault(options['categories'], ['Category']),
           labels: {
-            enabled: options['xAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['xAxis-labels-enabled'], true)
           }
         },
         yAxis: {
@@ -36,21 +38,21 @@ $(function() {
             text: yAxisTitle
           },
           labels: {
-            enabled: options['yAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['yAxis-labels-enabled'], true)
           }
         },
         plotOptions: {
           columnrange: {
-            pointWidth: options['plotOptions-pointWidth'] || 60,
-            grouping: options['plotOptions-grouping'] || false
+            pointWidth: getWithDefault(options['plotOptions-pointWidth'], 60),
+            grouping: getWithDefault(options['plotOptions-grouping'], false)
           }
         },
         legend: {
-          enabled: options['legend-enabled'] || true
+          enabled: getWithDefault(options['legend-enabled'], true)
         },
         tooltip: {
           formatter: function () {
-            return options['tooltip-formatter'] || '<b>' + this.x + ' - ' + this.series.name + '</b><br/>' + Highcharts.dateFormat('%e %B %H:%M', this.point.low) + ' - ' + Highcharts.dateFormat('%B %e %H:%M', this.point.high) + '<br/>';
+            return getWithDefault(options['tooltip-formatter'], '<b>' + this.x + ' - ' + this.series.name + '</b><br/>' + Highcharts.dateFormat('%e %B %H:%M', this.point.low) + ' - ' + Highcharts.dateFormat('%B %e %H:%M', this.point.high) + '<br/>');
           }
         },
         series: topLevelData

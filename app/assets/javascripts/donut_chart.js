@@ -1,29 +1,31 @@
 $(function() {
+  var getWithDefault = Kitechart.getWithDefault;
+  
   window.DonutChart = {
     createChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
-      var container = options['container'] || '#container';
+      var container = getWithDefault(options['container'], '#container');
 
       var chartData = DonutChart.formatTopLevelData(data);
 
       $(container).highcharts({
         chart: {
           type: 'pie',
-          backgroundColor: options['chart-backgroundColor'] || 'white'
+          backgroundColor: getWithDefault(options['chart-backgroundColor'], 'white')
         },
         title: {
           text: title,
           style: {
-            color: options['title-style-color'] || '#333333'
+            color: getWithDefault(options['title-style-color'], '#333333')
           }
         },
         subtitle: {
-          text: options['subtitle-text'] || ''
+          text: getWithDefault(options['subtitle-text'], '')
         },
         xAxis: {
-          type: options['xAxis-type'] || 'category',
+          type: getWithDefault(options['xAxis-type'], 'category'),
           labels: {
-            enabled: options['xAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['xAxis-labels-enabled'], true)
           }
         },
         yAxis: {
@@ -31,42 +33,42 @@ $(function() {
             text: yAxisTitle
           },
           labels: {
-            enabled: options['yAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['yAxis-labels-enabled'], true)
           }
         },
         exporting: {
-          enabled: options['exporting-enabled'] || false
+          enabled: getWithDefault(options['exporting-enabled'], false)
         },
         plotOptions: {
           pie: {
             borderColor: '#000000',
-            innerSize: options['plotOptions-pie-innerSize'] || '60%'
+            innerSize: getWithDefault(options['plotOptions-pie-innerSize'], '60%')
           },
           series: {
-            borderWidth: options['plotOptions-series-borderWidth'] || 0,
+            borderWidth: getWithDefault(options['plotOptions-series-borderWidth'], 0),
             dataLabels: {
               style: {
-                textOutline: options['plotOptions-dataLabels-style-textOutline'] || false
+                textOutline: getWithDefault(options['plotOptions-dataLabels-style-textOutline'], false)
               },
-              enabled: options['plotOptions-series-dataLabel-enabled'] || true,
-              format: options['plotOptions-series-dataLabel-format'] || '{point.y:,.0f}'
+              enabled: getWithDefault(options['plotOptions-series-dataLabel-enabled'], true),
+              format: getWithDefault(options['plotOptions-series-dataLabel-format'], '{point.y:,.0f}')
             }
           }
         },
         legend: {
-          enabled: options['legend-enabled'] || false
+          enabled: getWithDefault(options['legend-enabled'], false)
         },
         tooltip: {
-          headerFormat: options['tooltip-headerFormat'] || '',
-          pointFormat: options['tooltip-pointFormat'] || '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>'
+          headerFormat: getWithDefault(options['tooltip-headerFormat'], ''),
+          pointFormat: getWithDefault(options['tooltip-pointFormat'], '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>')
         },
         series: [{
           point: {
             events: {
-              click: options['series-point-events-click'] || ''
+              click: getWithDefault(options['series-point-events-click'], '')
             }
           },
-          colorByPoint: options['series-colorByPoint'] || true,
+          colorByPoint: getWithDefault(options['series-colorByPoint'], true),
           data: chartData
         }]
       });

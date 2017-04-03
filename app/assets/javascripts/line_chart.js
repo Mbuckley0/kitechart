@@ -1,29 +1,31 @@
 $(function() {
+  var getWithDefault = Kitechart.getWithDefault;
+  
   window.LineChart = {
     createChart: function(title, data, yAxisTitle, chartType, options) {
       var options = options || {};
-      var container = options['container'] || '#container';
+      var container = getWithDefault(options['container'], '#container');
 
       $(container).highcharts({
         chart: {
-          backgroundColor: options['chart-backgroundColor'] || 'white'
+          backgroundColor: getWithDefault(options['chart-backgroundColor'], 'white')
         },
         title: {
           text: title,
           x: -20,
           style: {
-            color: options['title-style-color'] || '#333333'
+            color: getWithDefault(options['title-style-color'], '#333333')
           }
         },
         xAxis: {
-          categories: options['categories'] || ['Values'],
+          categories: getWithDefault(options['categories'], ['Values']),
           labels: {
-            enabled: options['xAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['xAxis-labels-enabled'], true)
           }
         },
         yAxis: {
           labels: {
-            enabled: options['yAxis-labels-enabled'] || true
+            enabled: getWithDefault(options['yAxis-labels-enabled'], true)
           },
           plotLines: [{
             value: 0,
@@ -32,7 +34,7 @@ $(function() {
           }]
         },
         exporting: {
-          enabled: options['exporting-enabled'] || false
+          enabled: getWithDefault(options['exporting-enabled'], false)
         },
         legend: {
           layout: 'vertical',
