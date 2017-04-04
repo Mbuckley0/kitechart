@@ -11,6 +11,6 @@ window.Kitechart = {
     if (value === undefined) {
       return defaultValue;
     }
-    value;
+    return value;
   }
 };
