@@ -75,7 +75,9 @@ $(function() {
         xAxis: {
           type: getWithDefault(options['xAxis-type'], 'category'),
           labels: {
-            enabled: getWithDefault(options['xAxis-labels-enabled'], true)
+            rotation: getWithDefault(options['xAxis-labels-rotation'], 0),
+            enabled: getWithDefault(options['xAxis-labels-enabled'], true),
+            format: getWithDefault(options['xAxis-labels-format'], '{value}')
           }
         },
         yAxis: {
@@ -83,9 +85,12 @@ $(function() {
             text: yAxisTitle
           },
           labels: {
-            enabled: getWithDefault(options['yAxis-labels-enabled'], true)
+            rotation: getWithDefault(options['yAxis-labels-rotation'], 0),
+            enabled: getWithDefault(options['yAxis-labels-enabled'], true),
+            format: getWithDefault(options['yAxis-labels-format'], '{value}')
           },
-          gridLineColor: getWithDefault(options['yAxis-gridLineColor'], '#e6e6e6')
+          gridLineColor: getWithDefault(options['yAxis-gridLineColor'], '#e6e6e6'),
+          gridLineDashStyle: getWithDefault(options['yAxis-gridLineDashStyle'], 'solid')
         },
         exporting: {
           enabled: getWithDefault(options['exporting-enabled'], false)
@@ -110,6 +115,9 @@ $(function() {
         tooltip: {
           headerFormat: getWithDefault(options['tooltip-headerFormat'], ''),
           pointFormat: getWithDefault(options['tooltip-pointFormat'], '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>)')
+        },
+        credits: {
+          enabled: false
         },
         series: [{
           point: {

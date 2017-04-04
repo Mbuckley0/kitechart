@@ -42,6 +42,9 @@ $(function() {
           verticalAlign: 'middle',
           borderWidth: 0
         },
+        credits: {
+          enabled: false
+        },
         series: data['data']
       });
     }
