@@ -1,6 +1,6 @@
 $(function() {
   var getWithDefault = Kitechart.getWithDefault;
-  
+
   window.Chart = {
     mergeNames: function(arr) {
       return _.chain(arr).groupBy('name').mapValues(function(v) {
@@ -16,7 +16,12 @@ $(function() {
           if (item !== undefined) {
             item.y = item.y + value.data[0].y;
           } else {
-            data.push({ name: value.data[0].name, y: value.data[0].y, color: v[0].color, drilldown: value.data[0].drilldown });
+            data.push({
+              name: value.data[0].name,
+              y: value.data[0].y,
+              color: v[0].color,
+              drilldown: value.data[0].drilldown
+            });
           }
         });
         return { id: v[0].id, data: data, name: v[0].name };
@@ -45,7 +50,7 @@ $(function() {
       var chartData = Chart.formatTopLevelData(data);
       var drilldownData = Chart.formatDrilldownData(data);
 
-      if (options['mergeNames'] === false){
+      if (options['mergeNames'] === false) {
         var newData = chartData;
         var allDrilldownData = drilldownData;
       } else {
@@ -124,12 +129,13 @@ $(function() {
     formatTopLevelData: function(data) {
       var chartData = [];
 
-      $.each(data['data'], function(_key, value) {
+      $.each(data['data'], function(key, value) {
+        var name = Chart.parseJSONorKeys(key)[0].toString();
+
         chartData.push({
-          name: Object.values(value)[0].toString(),
-          y: parseFloat(_.last(Object.values(value))),
-          drilldown: Object.values(value)[0].toString(),
-          color: value['color']
+          name: name,
+          y: parseFloat(value),
+          drilldown: name
         });
       });
       return chartData;
@@ -137,13 +143,13 @@ $(function() {
 
     formatDrilldownData: function(data) {
       var drilldownData = [];
-      var dataLength = _.size(data['data'][0]);
+      var dataLength = _.size(Chart.parseJSONorKeys(Object.keys(data['data'])[0]));
 
-      for (var i = 1; i < dataLength - 1; i++) {
-        $.each(data['data'], function(_key, value) {
-          var name = _.dropRight(Object.values(value), dataLength - i);
-          if (i !== dataLength - 2) {
-            var drilldown = _.dropRight(Object.values(value), dataLength - i - 1);
+      for (var i = 1; i <= dataLength - 1; i++) {
+        $.each(data['data'], function(key, value) {
+          var name = _.dropRight(Chart.parseJSONorKeys(key), dataLength - i);
+          if (i !== dataLength - 1) {
+            var drilldown = _.dropRight(Chart.parseJSONorKeys(key), dataLength - i - 1);
           }
 
           drilldownData.push({
@@ -151,8 +157,8 @@ $(function() {
             id: _.join(name, '-'),
             data: [
               {
-                name: Object.values(value)[i],
-                y: parseFloat(_.last(Object.values(value))),
+                name: Chart.parseJSONorKeys(key)[i],
+                y: parseFloat(value),
                 drilldown: _.join(drilldown, '-')
               }
             ]
@@ -160,6 +166,14 @@ $(function() {
         });
       }
       return drilldownData;
+    },
+
+    parseJSONorKeys: function(value) {
+      try {
+        return JSON.parse(value);
+      } catch(e) {
+        return [value];
+      }
     }
   }
 });

@@ -19,17 +19,7 @@ module Kitechart
               else
                 columns.join('') + ' IS NOT NULL'
               end
-      data_group = aggregate(data.where(query).group(columns))
-
-      data_count = data_group.map do |value|
-        data_map = {}
-        columns.each_with_index do |column, index|
-          data_map[column] = value.first.is_a?(Array) ? value.first[index] : value[index]
-        end
-        data_map[:count] = value.second
-        data_map
-      end
-      data_count
+      aggregate(data.where(query).group(columns))
     end
 
     private
