@@ -1,4 +1,4 @@
-//= require lodash
+//= require lodash.min.js
 //= require highcharts
 //= require highcharts/modules/drilldown
 //= require highcharts/highcharts-more

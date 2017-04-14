@@ -43,6 +43,9 @@ $(function() {
           verticalAlign: 'middle',
           borderWidth: 0
         },
+        credits: {
+          enabled: false
+        },
         series: [{
           name: getWithDefault(options['series-name'], 'Data'),
           data: data['data']

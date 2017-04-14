@@ -55,6 +55,9 @@ $(function() {
             return getWithDefault(options['tooltip-formatter'], '<b>' + this.x + ' - ' + this.series.name + '</b><br/>' + Highcharts.dateFormat('%e %B %H:%M', this.point.low) + ' - ' + Highcharts.dateFormat('%B %e %H:%M', this.point.high) + '<br/>');
           }
         },
+        credits: {
+          enabled: false
+        },
         series: topLevelData
       });
     },

@@ -42,9 +42,7 @@ $(function() {
         plotOptions: {
           pie: {
             borderColor: '#000000',
-            innerSize: getWithDefault(options['plotOptions-pie-innerSize'], '60%')
-          },
-          series: {
+            innerSize: getWithDefault(options['plotOptions-pie-innerSize'], '60%'),
             borderWidth: getWithDefault(options['plotOptions-series-borderWidth'], 0),
             dataLabels: {
               style: {
@@ -62,6 +60,9 @@ $(function() {
           headerFormat: getWithDefault(options['tooltip-headerFormat'], ''),
           pointFormat: getWithDefault(options['tooltip-pointFormat'], '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:,.2f}</b><br/>')
         },
+        credits: {
+          enabled: false
+        },
         series: [{
           point: {
             events: {
@@ -78,10 +79,11 @@ $(function() {
       var chartData = [];
 
       $.each(data['data'], function(key, value) {
-        chartData.push([
-          key,
-          value
-        ]);
+        chartData.push({
+          name: key,
+          color: value['color'],
+          y: value
+        });
       });
       return chartData;
     }
