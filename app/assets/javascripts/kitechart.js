@@ -12,5 +12,21 @@ window.Kitechart = {
       return defaultValue;
     }
     return value;
+  },
+
+  parseJSONorKeys: function(value) {
+    try {
+      return JSON.parse(value);
+    } catch(e) {
+      return [value];
+    }
+  },
+
+  parseValue: function(value) {
+    if (isNaN(value['count'])) {
+      return value
+    } else {
+      return value['count']
+    }
   }
 };
