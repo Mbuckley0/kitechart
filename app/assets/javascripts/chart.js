@@ -138,12 +138,13 @@ $(function() {
       var chartData = [];
 
       $.each(data['data'], function(key, value) {
-        var name = Chart.parseJSONorKeys(key)[0].toString();
+        var name = Kitechart.parseJSONorKeys(key)[0].toString();
 
         chartData.push({
           name: name,
-          y: parseFloat(value),
-          drilldown: name
+          y: parseFloat(Kitechart.parseValue(value)),
+          drilldown: name,
+          color: value['color']
         });
       });
       return chartData;
@@ -151,13 +152,13 @@ $(function() {
 
     formatDrilldownData: function(data) {
       var drilldownData = [];
-      var dataLength = _.size(Chart.parseJSONorKeys(Object.keys(data['data'])[0]));
+      var dataLength = _.size(Kitechart.parseJSONorKeys(Object.keys(data['data'])[0]));
 
       for (var i = 1; i <= dataLength - 1; i++) {
         $.each(data['data'], function(key, value) {
-          var name = _.dropRight(Chart.parseJSONorKeys(key), dataLength - i);
+          var name = _.dropRight(Kitechart.parseJSONorKeys(key), dataLength - i);
           if (i !== dataLength - 1) {
-            var drilldown = _.dropRight(Chart.parseJSONorKeys(key), dataLength - i - 1);
+            var drilldown = _.dropRight(Kitechart.parseJSONorKeys(key), dataLength - i - 1);
           }
 
           drilldownData.push({
@@ -165,8 +166,8 @@ $(function() {
             id: _.join(name, '-'),
             data: [
               {
-                name: Chart.parseJSONorKeys(key)[i],
-                y: parseFloat(value),
+                name: Kitechart.parseJSONorKeys(key)[i],
+                y: parseFloat(Kitechart.parseValue(value)),
                 drilldown: _.join(drilldown, '-')
               }
             ]
@@ -174,14 +175,6 @@ $(function() {
         });
       }
       return drilldownData;
-    },
-
-    parseJSONorKeys: function(value) {
-      try {
-        return JSON.parse(value);
-      } catch(e) {
-        return [value];
-      }
     }
   }
 });

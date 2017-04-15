@@ -82,7 +82,7 @@ $(function() {
         chartData.push({
           name: key,
           color: value['color'],
-          y: value
+          y: parseFloat(Kitechart.parseValue(value))
         });
       });
       return chartData;
