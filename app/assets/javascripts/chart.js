@@ -3,29 +3,55 @@ $(function() {
 
   window.Chart = {
     mergeNames: function(arr) {
-      return _.chain(arr).groupBy('name').mapValues(function(v) {
-        return { name: v[0].name, y: _.sumBy(v, 'y'), color: v[0].color, drilldown: v[0].name };
-      }).value();
+      var holder = {};
+      arr.forEach(function(d) {
+        if (holder.hasOwnProperty(d.name)) {
+          holder[d.name] = holder[d.name] + d.y;
+        } else {
+          holder[d.name] = d.y;
+        }
+      });
+
+      var obj2 = [];
+      for (var prop in holder) {
+        obj2.push({ name: prop, y: holder[prop], drilldown: prop });
+      }
+
+      return obj2;
     },
 
     mergeDrilldowns: function(arr) {
-      return _.chain(arr).groupBy('name').mapValues(function(v) {
-        var data = [];
-        $.each(v, function(key, value) {
-          var item = _.find(data, { name: value.data[0].name });
-          if (item !== undefined) {
-            item.y = item.y + value.data[0].y;
+      var obj3 = [];
+
+      arr.forEach(function(d) {
+        var holder = {};
+        d.data.forEach(function(a) {
+
+          var drilldown = d['name'] + '-' + a.name;
+          if (holder.hasOwnProperty(a.drilldown)) {
+            holder[drilldown] = holder[a.drilldown] + a.y;
           } else {
-            data.push({
-              name: value.data[0].name,
-              y: value.data[0].y,
-              color: v[0].color,
-              drilldown: value.data[0].drilldown
-            });
+            holder[ drilldown] = a.y;
           }
         });
-        return { id: v[0].id, data: data, name: v[0].name };
-      }).value();
+
+        var obj2 = [];
+        for (var prop in holder) {
+          var names = prop.split('-');
+          var name = names[names.length - 1];
+
+          if (d['data'][0]['drilldown'].split('-').length !== names.length) {
+            obj2.push({ name: name, y: holder[prop], drilldown: undefined });
+          } else {
+            obj2.push({ name: name, y: holder[prop], drilldown: names.slice(0, names.length).join('-') });
+          }
+        }
+
+        d['data'] = obj2;
+        obj3.push(d);
+      });
+
+      return obj3;
     },
 
     generateChart: function(title, data, yAxisTitle, chartType, options) {
@@ -54,8 +80,8 @@ $(function() {
         var newData = chartData;
         var allDrilldownData = drilldownData;
       } else {
-        var newData = _.values(Chart.mergeNames(chartData));
-        var allDrilldownData = _.values(Chart.mergeDrilldowns(drilldownData));
+        var newData = Chart.mergeNames(chartData);
+        var allDrilldownData = Chart.mergeDrilldowns(drilldownData);
       }
 
       $(container).highcharts({
@@ -142,9 +168,8 @@ $(function() {
 
         chartData.push({
           name: name,
-          y: parseFloat(Kitechart.parseValue(value)),
-          drilldown: name,
-          color: value['color']
+          y: parseFloat(value),
+          drilldown: name
         });
       });
       return chartData;
@@ -152,23 +177,21 @@ $(function() {
 
     formatDrilldownData: function(data) {
       var drilldownData = [];
-      var dataLength = _.size(Kitechart.parseJSONorKeys(Object.keys(data['data'])[0]));
+      var dataLength = JSON.parse(Object.keys(data['data'])[0]).length;
 
       for (var i = 1; i <= dataLength - 1; i++) {
         $.each(data['data'], function(key, value) {
-          var name = _.dropRight(Kitechart.parseJSONorKeys(key), dataLength - i);
-          if (i !== dataLength - 1) {
-            var drilldown = _.dropRight(Kitechart.parseJSONorKeys(key), dataLength - i - 1);
-          }
+          var name = JSON.parse(key).slice(0, -(dataLength - i));
+          var drilldown = JSON.parse(key).slice(0, -(dataLength - i - 1));
 
           drilldownData.push({
-            name: _.join(name, '-'),
-            id: _.join(name, '-'),
+            name: name.join('-'),
+            id: name.join('-'),
             data: [
               {
-                name: Kitechart.parseJSONorKeys(key)[i],
-                y: parseFloat(Kitechart.parseValue(value)),
-                drilldown: _.join(drilldown, '-')
+                name: JSON.parse(key)[i],
+                y: parseFloat(value),
+                drilldown: drilldown.join('-')
               }
             ]
           });
